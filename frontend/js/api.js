@@ -30,5 +30,11 @@ async function apiFetch(path, options = {}) {
 const api = {
   // Clients
   getClients: () => apiFetch("/api/clients"),
-  getClient: (id) => apiFetch(`/api/clients/${id}`)
+  getClient: (id) => apiFetch(`/api/clients/${id}`),
+  createClient: (body) => apiFetch("/api/clients", { method: "POST", body: JSON.stringify(body) }),
+  updateClient: (id, body) => apiFetch(`/api/clients/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  deleteClient: (id) => apiFetch(`/api/clients/${id}`, { method: "DELETE" }),
+  getAvailableContacts: (clientId) => apiFetch(`/api/clients/${clientId}/available-contacts`),
+  linkContact: (clientId, contactId) => apiFetch(`/api/clients/${clientId}/contacts/${contactId}`, { method: "POST" }),
+  unlinkContact: (clientId, contactId) => apiFetch(`/api/clients/${clientId}/contacts/${contactId}`, { method: "DELETE" }),
 };
