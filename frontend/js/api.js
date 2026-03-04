@@ -26,3 +26,9 @@ async function apiFetch(path, options = {}) {
 
   return data;
 }
+
+const api = {
+  // Clients
+  getClients: () => apiFetch("/api/clients"),
+  getClient: (id) => apiFetch(`/api/clients/${id}`)
+};
