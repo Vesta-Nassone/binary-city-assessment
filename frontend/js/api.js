@@ -37,4 +37,14 @@ const api = {
   getAvailableContacts: (clientId) => apiFetch(`/api/clients/${clientId}/available-contacts`),
   linkContact: (clientId, contactId) => apiFetch(`/api/clients/${clientId}/contacts/${contactId}`, { method: "POST" }),
   unlinkContact: (clientId, contactId) => apiFetch(`/api/clients/${clientId}/contacts/${contactId}`, { method: "DELETE" }),
+
+  // Contacts
+  getContacts: () => apiFetch("/api/contacts"),
+  getContact: (id) => apiFetch(`/api/contacts/${id}`),
+  createContact: (body) => apiFetch("/api/contacts", { method: "POST", body: JSON.stringify(body) }),
+  updateContact: (id, body) => apiFetch(`/api/contacts/${id}`, { method: "PUT", body: JSON.stringify(body) }),
+  deleteContact: (id) => apiFetch(`/api/contacts/${id}`, { method: "DELETE" }),
+  getAvailableClients: (contactId) => apiFetch(`/api/contacts/${contactId}/available-clients`),
+  linkClient: (contactId, clientId) => apiFetch(`/api/contacts/${contactId}/clients/${clientId}`, { method: "POST" }),
+  unlinkClient: (contactId, clientId) => apiFetch(`/api/contacts/${contactId}/clients/${clientId}`, { method: "DELETE" }),
 };
