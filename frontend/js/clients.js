@@ -55,12 +55,20 @@ async function renderClientList() {
   }
 }
 
-// Utility functions
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+// Helpers for alerts and form errors
+function showAlert(container, message, type = "error") {
+  const el = document.createElement("div");
+  el.className = `alert alert-${type}`;
+  el.textContent = message;
+  container.prepend(el);
+  setTimeout(() => el.remove(), 5000);
+}
+
+function clearErrors(form) {
+  form.querySelectorAll(".field-error").forEach((el) => (el.textContent = ""));
+}
+
+function setError(form, fieldName, message) {
+  const el = form.querySelector(`[data-error="${fieldName}"]`);
+  if (el) el.textContent = message;
 }
