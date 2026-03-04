@@ -33,9 +33,9 @@ async function renderContactList() {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Email Address</th>
+            <th class="left">Name</th>
+            <th class="left">Surname</th>
+            <th class="left">Email Address</th>
             <th class="center">No. of Linked Clients</th>
           </tr>
         </thead>
@@ -156,7 +156,10 @@ function renderContactGeneralTab(contact, isNew) {
     try {
       if (isNew) {
         const created = await api.createContact({ name, surname, email });
-        window.location.hash = `#/contacts/${created.id}`;
+        if (created) {
+          window.location.hash = `#/contacts`;
+          showContactAlert(document.querySelector(".card"), "Contact saved successfully.", "success");
+        }
       } else {
         await api.updateContact(contact.id, { name, surname, email });
         showContactAlert(document.querySelector(".card"), "Contact saved successfully.", "success");
@@ -220,8 +223,8 @@ async function renderClientsTab(contact) {
         <table>
           <thead>
             <tr>
-              <th>Client Name</th>
-              <th>Client Code</th>
+              <th class="left">Client Name</th>
+              <th class="left">Client Code</th>
               <th></th>
             </tr>
           </thead>
