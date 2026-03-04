@@ -173,7 +173,7 @@ async function renderContactsTab(client) {
           .map(
             (c) => `
           <tr>
-            <td>${escapeHtml(c.surname)}, ${escapeHtml(c.name)}</td>
+            <td>${escapeHtml(c.surname)} ${escapeHtml(c.name)}</td>
             <td>${escapeHtml(c.email)}</td>
             <td>
               <button class="btn-link danger" data-unlink="${c.id}">Unlink</button>
@@ -199,8 +199,8 @@ async function renderContactsTab(client) {
         <table>
           <thead>
             <tr>
-              <th>Full Name</th>
-              <th>Email Address</th>
+              <th class="left">Full Name</th>
+              <th class="left">Email Address</th>
               <th></th>
             </tr>
           </thead>
