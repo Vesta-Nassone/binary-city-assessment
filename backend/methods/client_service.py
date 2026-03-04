@@ -4,6 +4,7 @@ from sqlalchemy import func
 from fastapi import HTTPException
 
 from backend.models.client import Client
+from backend.models.contact import Contact
 from backend.schemas.client import ClientCreate, ClientUpdate
 
 
@@ -200,3 +201,106 @@ def delete_client(client_id: int, db: Session) -> None:
 
     db.delete(client)
     db.commit()
+
+
+def link_contact(client_id: int, contact_id: int, db: Session) -> dict:
+    """Link a contact to a client.
+
+    Args:
+        client_id (int): The ID of the client.
+        contact_id (int): The ID of the contact.
+        db (Session): The database session.
+
+    Raises:
+        HTTPException: If the client or contact is not found.
+        HTTPException: If the contact is already linked to the client.
+
+    Returns:
+        dict: A dictionary containing a success message.
+    """
+
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+
+    contact = db.query(Contact).filter(Contact.id == contact_id).first()
+    if not contact:
+        raise HTTPException(status_code=404, detail="Contact not found")
+
+    if contact in client.contacts:
+        raise HTTPException(
+            status_code=409, detail="Contact already linked to this client"
+        )
+
+    client.contacts.append(contact)
+    db.commit()
+
+    return {"message": "Contact linked successfully"}
+
+
+def unlink_contact(client_id: int, contact_id: int, db: Session) -> dict:
+    """Unlink a contact from a client.
+
+    Args:
+        client_id (int): The ID of the client.
+        contact_id (int): The ID of the contact.
+        db (Session): The database session.
+
+    Raises:
+        HTTPException: If the client or contact is not found.
+        HTTPException: If the contact is not linked to the client.
+
+    Returns:
+        dict: A dictionary containing a success message.
+    """
+
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+
+    contact = db.query(Contact).filter(Contact.id == contact_id).first()
+    if not contact:
+        raise HTTPException(status_code=404, detail="Contact not found")
+
+    if contact not in client.contacts:
+        raise HTTPException(
+            status_code=404, detail="Contact is not linked to this client"
+        )
+
+    client.contacts.remove(contact)
+    db.commit()
+
+    return {"message": "Contact unlinked successfully"}
+
+
+def get_available_contacts(client_id: int, db: Session) -> list[dict]:
+    """Get a list of contacts that are not linked to a specific client.
+
+    Args:
+        client_id (int): The ID of the client.
+        db (Session): The database session.
+
+    Raises:
+        HTTPException: If the client is not found.
+
+
+    Returns:
+        list[dict]: A list of dictionaries containing information about available contacts.
+    """
+
+    client = db.query(Client).filter(Client.id == client_id).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+
+    linked_ids = {c.id for c in client.contacts}
+    all_contacts = (
+        db.query(Contact)
+        .order_by(func.lower(Contact.surname), func.lower(Contact.name))
+        .all()
+    )
+
+    return [
+        {"id": c.id, "name": c.name, "surname": c.surname, "email": c.email}
+        for c in all_contacts
+        if c.id not in linked_ids
+    ]
