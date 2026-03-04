@@ -14,3 +14,49 @@ body {
   background: #f8f9fa;
   min-height: 100vh;
 }
+
+/* ── Navbar ───────────────────────────────────────────────── */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: #F3F2F2;
+  color: #333;
+  padding: 0 2rem;
+  height: 52px;
+}
+
+.nav-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: #e0e0ff;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+}
+
+.nav-links a {
+  display: block;
+  padding: 0.4rem 1rem;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
