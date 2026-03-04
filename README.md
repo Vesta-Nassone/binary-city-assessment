@@ -127,6 +127,13 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 
 # 5. Open in browser
+# App:     http://localhost:8000
+# Swagger: http://localhost:8000/docs
+
+# 6. (Optional) Run on a different port
+# uvicorn main:app --reload --port 8001
+# App:     http://localhost:8001
+# Swagger: http://localhost:8001/docs
 # http://localhost:8000
 ```
 
